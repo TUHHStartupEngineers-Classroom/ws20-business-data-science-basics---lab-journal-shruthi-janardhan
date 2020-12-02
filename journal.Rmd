@@ -52,15 +52,18 @@ hist(samples)
 ```
 
 ```{r}
+
+
+# 2.0 Importing Files ----
 library(tidyverse)
 library(readxl)
 
 # 2.0 Importing Files ----
-bikes_tbl      <- read_excel(path = "00_data/01_bike_sales/01_raw_data/bikes.xlsx")
-orderlines_tbl <- read_excel("00_data/01_bike_sales/01_raw_data/orderlines.xlsx")
+bikes_tbl      <- read_excel(path = "~/GitHub/ws20-business-data-science-basics---lab-journal-shruthi-janardhan/data_science/DS_101/00_data/01_bike_sales/01_raw_data/bikes.xlsx")
+orderlines_tbl <- read_excel("~/GitHub/ws20-business-data-science-basics---lab-journal-shruthi-janardhan/data_science/DS_101/00_data/01_bike_sales/01_raw_data/orderlines.xlsx")
 
 # Not necessary for this analysis, but for the sake of completeness
-bikeshops_tbl  <- read_excel("00_data/01_bike_sales/01_raw_data/bikeshops.xlsx")
+bikeshops_tbl  <- read_excel("~/GitHub/ws20-business-data-science-basics---lab-journal-shruthi-janardhan/data_science/DS_101/00_data/01_bike_sales/01_raw_data/bikeshops.xlsx")
 
 # 3.0 Examining Data ----
 orderlines_tbl
@@ -200,6 +203,7 @@ sales_by_year_state_tbl %>%
     #subtitle = "Each product category has an upward trend",
     fill = "state" # Changes the legend name
   )
+
 ```
 
 When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You'll learn that all of these things and more can be customized in each R code block.

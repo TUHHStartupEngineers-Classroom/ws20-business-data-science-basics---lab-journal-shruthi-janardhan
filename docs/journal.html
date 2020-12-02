@@ -437,6 +437,258 @@ div.tocify {
 <pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
 hist(samples)</code></pre>
 <p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code># 2.0 Importing Files ----
+library(tidyverse)
+library(readxl)
+
+# 2.0 Importing Files ----
+bikes_tbl      &lt;- read_excel(path = &quot;~/GitHub/ws20-business-data-science-basics---lab-journal-shruthi-janardhan/data_science/DS_101/00_data/01_bike_sales/01_raw_data/bikes.xlsx&quot;)
+orderlines_tbl &lt;- read_excel(&quot;~/GitHub/ws20-business-data-science-basics---lab-journal-shruthi-janardhan/data_science/DS_101/00_data/01_bike_sales/01_raw_data/orderlines.xlsx&quot;)
+
+# Not necessary for this analysis, but for the sake of completeness
+bikeshops_tbl  &lt;- read_excel(&quot;~/GitHub/ws20-business-data-science-basics---lab-journal-shruthi-janardhan/data_science/DS_101/00_data/01_bike_sales/01_raw_data/bikeshops.xlsx&quot;)
+
+# 3.0 Examining Data ----
+orderlines_tbl</code></pre>
+<pre><code>## # A tibble: 15,644 x 7
+##    ...1  order.id order.line order.date          customer.id product.id quantity
+##    &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;dttm&gt;                    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+##  1 1            1          1 2015-01-07 00:00:00           2       2681        1
+##  2 2            1          2 2015-01-07 00:00:00           2       2411        1
+##  3 3            2          1 2015-01-10 00:00:00          10       2629        1
+##  4 4            2          2 2015-01-10 00:00:00          10       2137        1
+##  5 5            3          1 2015-01-10 00:00:00           6       2367        1
+##  6 6            3          2 2015-01-10 00:00:00           6       1973        1
+##  7 7            3          3 2015-01-10 00:00:00           6       2422        1
+##  8 8            3          4 2015-01-10 00:00:00           6       2655        1
+##  9 9            3          5 2015-01-10 00:00:00           6       2247        1
+## 10 10           4          1 2015-01-11 00:00:00          22       2408        1
+## # ... with 15,634 more rows</code></pre>
+<pre class="r"><code>glimpse(orderlines_tbl)</code></pre>
+<pre><code>## Rows: 15,644
+## Columns: 7
+## $ ...1        &lt;chr&gt; &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;, &quot;11&quot;...
+## $ order.id    &lt;dbl&gt; 1, 1, 2, 2, 3, 3, 3, 3, 3, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7...
+## $ order.line  &lt;dbl&gt; 1, 2, 1, 2, 1, 2, 3, 4, 5, 1, 1, 2, 3, 4, 1, 2, 3, 4, 1...
+## $ order.date  &lt;dttm&gt; 2015-01-07, 2015-01-07, 2015-01-10, 2015-01-10, 2015-0...
+## $ customer.id &lt;dbl&gt; 2, 2, 10, 10, 6, 6, 6, 6, 6, 22, 8, 8, 8, 8, 16, 16, 16...
+## $ product.id  &lt;dbl&gt; 2681, 2411, 2629, 2137, 2367, 1973, 2422, 2655, 2247, 2...
+## $ quantity    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1...</code></pre>
+<pre class="r"><code># 4.0 Joining Data ----
+left_join(orderlines_tbl, bikes_tbl, by = c(&quot;product.id&quot; = &quot;bike.id&quot;))</code></pre>
+<pre><code>## # A tibble: 15,644 x 15
+##    ...1  order.id order.line order.date          customer.id product.id quantity
+##    &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;dttm&gt;                    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+##  1 1            1          1 2015-01-07 00:00:00           2       2681        1
+##  2 2            1          2 2015-01-07 00:00:00           2       2411        1
+##  3 3            2          1 2015-01-10 00:00:00          10       2629        1
+##  4 4            2          2 2015-01-10 00:00:00          10       2137        1
+##  5 5            3          1 2015-01-10 00:00:00           6       2367        1
+##  6 6            3          2 2015-01-10 00:00:00           6       1973        1
+##  7 7            3          3 2015-01-10 00:00:00           6       2422        1
+##  8 8            3          4 2015-01-10 00:00:00           6       2655        1
+##  9 9            3          5 2015-01-10 00:00:00           6       2247        1
+## 10 10           4          1 2015-01-11 00:00:00          22       2408        1
+## # ... with 15,634 more rows, and 8 more variables: model &lt;chr&gt;,
+## #   model.year &lt;dbl&gt;, frame.material &lt;chr&gt;, weight &lt;dbl&gt;, price &lt;dbl&gt;,
+## #   category &lt;chr&gt;, gender &lt;chr&gt;, url &lt;chr&gt;</code></pre>
+<pre class="r"><code>bike_orderlines_joined_tbl &lt;- orderlines_tbl %&gt;%
+  left_join(bikes_tbl, by = c(&quot;product.id&quot; = &quot;bike.id&quot;)) %&gt;%
+  left_join(bikeshops_tbl, by = c(&quot;customer.id&quot; = &quot;bikeshop.id&quot;))
+bike_orderlines_joined_tbl %&gt;% glimpse()</code></pre>
+<pre><code>## Rows: 15,644
+## Columns: 19
+## $ ...1           &lt;chr&gt; &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;, &quot;...
+## $ order.id       &lt;dbl&gt; 1, 1, 2, 2, 3, 3, 3, 3, 3, 4, 5, 5, 5, 5, 6, 6, 6, 6...
+## $ order.line     &lt;dbl&gt; 1, 2, 1, 2, 1, 2, 3, 4, 5, 1, 1, 2, 3, 4, 1, 2, 3, 4...
+## $ order.date     &lt;dttm&gt; 2015-01-07, 2015-01-07, 2015-01-10, 2015-01-10, 201...
+## $ customer.id    &lt;dbl&gt; 2, 2, 10, 10, 6, 6, 6, 6, 6, 22, 8, 8, 8, 8, 16, 16,...
+## $ product.id     &lt;dbl&gt; 2681, 2411, 2629, 2137, 2367, 1973, 2422, 2655, 2247...
+## $ quantity       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1...
+## $ model          &lt;chr&gt; &quot;Spectral CF 7 WMN&quot;, &quot;Ultimate CF SLX Disc 8.0 ETAP&quot;...
+## $ model.year     &lt;dbl&gt; 2021, 2020, 2021, 2019, 2020, 2020, 2020, 2021, 2020...
+## $ frame.material &lt;chr&gt; &quot;carbon&quot;, &quot;carbon&quot;, &quot;carbon&quot;, &quot;carbon&quot;, &quot;aluminium&quot;,...
+## $ weight         &lt;dbl&gt; 13.80, 7.44, 14.06, 8.80, 11.50, 8.80, 8.20, 8.85, 1...
+## $ price          &lt;dbl&gt; 3119, 5359, 2729, 1749, 1219, 1359, 2529, 1559, 3899...
+## $ category       &lt;chr&gt; &quot;Mountain - Trail - Spectral&quot;, &quot;Road - Race - Ultima...
+## $ gender         &lt;chr&gt; &quot;female&quot;, &quot;unisex&quot;, &quot;unisex&quot;, &quot;unisex&quot;, &quot;unisex&quot;, &quot;u...
+## $ url            &lt;chr&gt; &quot;https://www.canyon.com/en-de/mountain-bikes/trail-b...
+## $ name           &lt;chr&gt; &quot;AlexandeRad&quot;, &quot;AlexandeRad&quot;, &quot;WITT-RAD&quot;, &quot;WITT-RAD&quot;...
+## $ location       &lt;chr&gt; &quot;Hamburg, Hamburg&quot;, &quot;Hamburg, Hamburg&quot;, &quot;Bremen, Bre...
+## $ lat            &lt;dbl&gt; 53.57532, 53.57532, 53.07379, 53.07379, 48.78234, 48...
+## $ lng            &lt;dbl&gt; 10.015340, 10.015340, 8.826754, 8.826754, 9.180819, ...</code></pre>
+<pre class="r"><code># 5.0 Wrangling Data ----
+bike_orderlines_wrangled_tbl &lt;- bike_orderlines_joined_tbl %&gt;%
+  # 5.1 Separate category name
+  separate(col    = category,
+           into   = c(&quot;category.1&quot;, &quot;category.2&quot;, &quot;category.3&quot;),
+           sep    = &quot; - &quot;) %&gt;%
+  # 5.2 Add the total price (price * quantity) 
+  # Add a column to a tibble that uses a formula-style calculation of other columns
+  mutate(total.price = price * quantity) %&gt;%
+  
+  # 5.3 Optional: Reorganize. Using select to grab or remove unnecessary columns
+  # 5.3.1 by exact column name
+  select(-...1, -gender) %&gt;%
+  
+  # 5.3.2 by a pattern
+  # You can use the select_helpers to define patterns. 
+  # Type ?ends_with and click on Select helpers in the documentation
+  select(-ends_with(&quot;.id&quot;)) %&gt;%
+  
+  # 5.3.3 Actually we need the column &quot;order.id&quot;. Let&#39;s bind it back to the data
+  bind_cols(bike_orderlines_joined_tbl %&gt;% select(order.id)) %&gt;% 
+  
+  # 5.3.4 You can reorder the data by selecting the columns in your desired order.
+  # You can use select_helpers like contains() or everything()
+  select(order.id, contains(&quot;order&quot;), contains(&quot;model&quot;), contains(&quot;category&quot;),
+         price, quantity, total.price,
+         everything()) %&gt;%
+  
+  # 5.4 Rename columns because we actually wanted underscores instead of the dots
+  # (one at the time vs. multiple at once)
+  rename(bikeshop = name) %&gt;%
+  set_names(names(.) %&gt;% str_replace_all(&quot;\\.&quot;, &quot;_&quot;))
+
+# 6.0 Business Insights ----
+bike_orderlines_wrangled_tb2 &lt;-bike_orderlines_wrangled_tbl %&gt;%
+  # 5.1 Separate category name
+  separate(col    = location,
+           into   = c(&quot;city&quot;, &quot;state&quot;),
+           sep    = &quot;,&quot;) 
+  
+bike_orderlines_wrangled_tb2</code></pre>
+<pre><code>## # A tibble: 15,644 x 19
+##    order_id order_line order_date          model model_year category_1
+##       &lt;dbl&gt;      &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;     
+##  1        1          1 2015-01-07 00:00:00 Spec~       2021 Mountain  
+##  2        1          2 2015-01-07 00:00:00 Ulti~       2020 Road      
+##  3        2          1 2015-01-10 00:00:00 Neur~       2021 Mountain  
+##  4        2          2 2015-01-10 00:00:00 Spee~       2019 Road      
+##  5        3          1 2015-01-10 00:00:00 Stit~       2020 Mountain  
+##  6        3          2 2015-01-10 00:00:00 Road~       2020 Hybrid / ~
+##  7        3          3 2015-01-10 00:00:00 Spee~       2020 Road      
+##  8        3          4 2015-01-10 00:00:00 Infl~       2021 Road      
+##  9        3          5 2015-01-10 00:00:00 Torq~       2020 Mountain  
+## 10        4          1 2015-01-11 00:00:00 Ulti~       2020 Road      
+## # ... with 15,634 more rows, and 13 more variables: category_2 &lt;chr&gt;,
+## #   category_3 &lt;chr&gt;, price &lt;dbl&gt;, quantity &lt;dbl&gt;, total_price &lt;dbl&gt;,
+## #   frame_material &lt;chr&gt;, weight &lt;dbl&gt;, url &lt;chr&gt;, bikeshop &lt;chr&gt;, city &lt;chr&gt;,
+## #   state &lt;chr&gt;, lat &lt;dbl&gt;, lng &lt;dbl&gt;</code></pre>
+<pre class="r"><code># 6.1 Sales by state ----
+library(lubridate)
+# Step 1 - Manipulate
+sales_by_state_tbl &lt;- bike_orderlines_wrangled_tb2 %&gt;%
+  # Select columns
+  select(state, total_price) %&gt;%
+  
+  group_by(state) %&gt;% 
+  summarize(sales = sum(total_price)) %&gt;%
+  
+  mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, 
+                                     decimal.mark = &quot;,&quot;, 
+                                     prefix = &quot;&quot;, 
+                                     suffix = &quot; €&quot;))
+
+sales_by_state_tbl</code></pre>
+<pre><code>## # A tibble: 12 x 3
+##    state                               sales sales_text  
+##    &lt;chr&gt;                               &lt;dbl&gt; &lt;chr&gt;       
+##  1 &quot; Baden-Württemberg&quot;              6521090 6.521.090 € 
+##  2 &quot; Bavaria&quot;                        6742819 6.742.819 € 
+##  3 &quot; Berlin&quot;                         1128433 1.128.433 € 
+##  4 &quot; Bremen&quot;                        10653499 10.653.499 €
+##  5 &quot; Hamburg&quot;                        3874756 3.874.756 € 
+##  6 &quot; Hesse&quot;                          1558901 1.558.901 € 
+##  7 &quot; Lower Saxony&quot;                   4107115 4.107.115 € 
+##  8 &quot; Mecklenburg-Western Pomerania&quot;   618974 618.974 €   
+##  9 &quot; North Rhine-Westphalia&quot;        21200613 21.200.613 €
+## 10 &quot; Saxony&quot;                         2230245 2.230.245 € 
+## 11 &quot; Saxony-Anhalt&quot;                   569614 569.614 €   
+## 12 &quot; Schleswig-Holstein&quot;             3224749 3.224.749 €</code></pre>
+<pre class="r"><code># Step 2 - Visualize
+sales_by_state_tbl %&gt;%
+
+  
+  # Setup canvas with the columns year (x-axis) and sales (y-axis)
+  ggplot(aes(x = state, y = sales)) +
+  
+  # Geometries
+  geom_col(fill = &quot;#2DC6D6&quot;) + # Use geom_col for a bar plot
+  geom_label(aes(label = sales_text)) + # Adding labels to the bars
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) +
+  # Formatting
+  # scale_y_continuous(labels = scales::dollar) + # Change the y-axis. 
+  # Again, we have to adjust it for euro values
+  scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, 
+                                                    decimal.mark = &quot;,&quot;, 
+                                                    prefix = &quot;&quot;, 
+                                                    suffix = &quot; €&quot;)) +
+  labs(
+    title    = &quot;Revenue by state&quot;,
+    subtitle = &quot;Upward Trend&quot;,
+    x = &quot;&quot;, # Override defaults for x and y
+    y = &quot;Revenue&quot;
+  )</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># 6.2 Sales by Year and location ----
+
+# Step 1 - Manipulate
+sales_by_year_state_tbl &lt;- bike_orderlines_wrangled_tb2 %&gt;%
+  
+  # Select columns and add a year
+  select(order_date, total_price, state) %&gt;%
+  mutate(year = year(order_date)) %&gt;%
+  
+  # Group by and summarize year and main catgegory
+  group_by(year, state) %&gt;%
+  summarise(sales = sum(total_price)) %&gt;%
+  ungroup() %&gt;%
+  
+  # Format $ Text
+  mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, 
+                                     decimal.mark = &quot;,&quot;, 
+                                     prefix = &quot;&quot;, 
+                                     suffix = &quot; €&quot;))
+
+sales_by_year_state_tbl  </code></pre>
+<pre><code>## # A tibble: 60 x 4
+##     year state                              sales sales_text 
+##    &lt;dbl&gt; &lt;chr&gt;                              &lt;dbl&gt; &lt;chr&gt;      
+##  1  2015 &quot; Baden-Württemberg&quot;             1031924 1.031.924 €
+##  2  2015 &quot; Bavaria&quot;                       1301461 1.301.461 €
+##  3  2015 &quot; Berlin&quot;                          95853 95.853 €   
+##  4  2015 &quot; Bremen&quot;                        1395912 1.395.912 €
+##  5  2015 &quot; Hamburg&quot;                        423090 423.090 €  
+##  6  2015 &quot; Hesse&quot;                          308609 308.609 €  
+##  7  2015 &quot; Lower Saxony&quot;                   584386 584.386 €  
+##  8  2015 &quot; Mecklenburg-Western Pomerania&quot;  222003 222.003 €  
+##  9  2015 &quot; North Rhine-Westphalia&quot;        3735092 3.735.092 €
+## 10  2015 &quot; Saxony&quot;                         238371 238.371 €  
+## # ... with 50 more rows</code></pre>
+<pre class="r"><code># Step 2 - Visualize
+sales_by_year_state_tbl %&gt;%
+  
+  # Set up x, y, fill
+  ggplot(aes(x = year, y = sales, fill = state)) +
+  
+  # Geometries
+  geom_col() + # Run up to here to get a stacked bar plot
+  
+  # Facet
+  facet_wrap(~ state) +
+  
+  # Formatting
+  scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, 
+                                                    decimal.mark = &quot;,&quot;, 
+                                                    prefix = &quot;&quot;, 
+                                                    suffix = &quot; €&quot;)) +
+  labs(
+    title = &quot;Revenue by year and state&quot;,
+    #subtitle = &quot;Each product category has an upward trend&quot;,
+    fill = &quot;state&quot; # Changes the legend name
+  )</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
 </div>
 
