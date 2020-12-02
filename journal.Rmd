@@ -40,7 +40,9 @@ Last compiled: `r Sys.Date()`
 
 I'm writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom
 
-# Adding R stuff
+# Chapter 2 :  Intro to tidyverse 
+
+Solutions to challenges
 
 So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place. 
 
@@ -133,7 +135,9 @@ sales_by_state_tbl <- bike_orderlines_wrangled_tb2 %>%
                                      suffix = " €"))
 
 sales_by_state_tbl
-# Step 2 - Visualize
+```
+
+```{r plot, fig.width=15, fig.height=10}
 sales_by_state_tbl %>%
 
   

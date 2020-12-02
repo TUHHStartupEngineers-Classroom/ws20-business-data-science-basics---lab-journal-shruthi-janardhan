@@ -430,8 +430,9 @@ div.tocify {
 <p>Last compiled: 2020-12-02</p>
 <p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
 </div>
-<div id="adding-r-stuff" class="section level1">
-<h1><span class="header-section-number">3</span> Adding R stuff</h1>
+<div id="chapter-2-intro-to-tidyverse" class="section level1">
+<h1><span class="header-section-number">3</span> Chapter 2 : Intro to tidyverse</h1>
+<p>Solutions to challenges</p>
 <p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
 <p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
 <pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
@@ -606,8 +607,7 @@ sales_by_state_tbl</code></pre>
 ## 10 &quot; Saxony&quot;                         2230245 2.230.245 € 
 ## 11 &quot; Saxony-Anhalt&quot;                   569614 569.614 €   
 ## 12 &quot; Schleswig-Holstein&quot;             3224749 3.224.749 €</code></pre>
-<pre class="r"><code># Step 2 - Visualize
-sales_by_state_tbl %&gt;%
+<pre class="r"><code>sales_by_state_tbl %&gt;%
 
   
   # Setup canvas with the columns year (x-axis) and sales (y-axis)
@@ -630,7 +630,7 @@ sales_by_state_tbl %&gt;%
     x = &quot;&quot;, # Override defaults for x and y
     y = &quot;Revenue&quot;
   )</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="journal_files/figure-html/plot-1.png" width="1440" /></p>
 <pre class="r"><code># 6.2 Sales by Year and location ----
 
 # Step 1 - Manipulate
@@ -688,7 +688,7 @@ sales_by_year_state_tbl %&gt;%
     #subtitle = &quot;Each product category has an upward trend&quot;,
     fill = &quot;state&quot; # Changes the legend name
   )</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p><img src="journal_files/figure-html/plot-2.png" width="1440" /></p>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
 </div>
 
