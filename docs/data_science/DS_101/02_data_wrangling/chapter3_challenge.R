@@ -48,7 +48,8 @@ bike_price <- html_home %>%
   
 
 bike_model<- mutate (bike_model,bike_price)
-bike_model
+rename(bike_model, price = value)
+
 
 
 

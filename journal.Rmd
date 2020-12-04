@@ -207,6 +207,7 @@ sales_by_year_state_tbl %>%
   )
 
 ```
+
 # Chapter 3  :  Data acquisition
 
 ```{r}
@@ -233,7 +234,6 @@ rig_veda_tbl %>% head(n= 10)
 # Collect the category families
 url_home   <- "https://www.rosebikes.com/bikes/kids"
 xopen(url_home) # Open links directly from RStudio to inspect them
-
 # Read in the HTML for the entire webpage
 html_home  <- read_html(url_home)
 # Web scrape the the categories of kids
@@ -258,7 +258,9 @@ bike_price <- html_home %>%
   
 
 bike_model<- mutate (bike_model,bike_price)
-bike_model
+rename(bike_model, price = value)
+
+#bike_model
 
 ```
 When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You'll learn that all of these things and more can be customized in each R code block.

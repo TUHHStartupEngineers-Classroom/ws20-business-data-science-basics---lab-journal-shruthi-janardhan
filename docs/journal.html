@@ -688,7 +688,10 @@ sales_by_year_state_tbl %&gt;%
     #subtitle = &quot;Each product category has an upward trend&quot;,
     fill = &quot;state&quot; # Changes the legend name
   )</code></pre>
-<p><img src="journal_files/figure-html/plot-2.png" width="1440" /> # Chapter 3 : Data acquisition</p>
+<p><img src="journal_files/figure-html/plot-2.png" width="1440" /></p>
+</div>
+<div id="chapter-3-data-acquisition" class="section level1">
+<h1><span class="header-section-number">4</span> Chapter 3 : Data acquisition</h1>
 <pre class="r"><code>library(tidyverse) # Main Package - Loads dplyr, purrr, etc.
 library(rvest)     # HTML Hacking &amp; Web Scraping
 library(xopen)     # Quickly opening URLs
@@ -749,9 +752,9 @@ bike_price &lt;- html_home %&gt;%
   
 
 bike_model&lt;- mutate (bike_model,bike_price)
-bike_model</code></pre>
+rename(bike_model, price = value)</code></pre>
 <pre><code>## # A tibble: 10 x 3
-##    position model_name   value
+##    position model_name   price
 ##       &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
 ##  1        1 &quot;NOOB    &quot;    129 
 ##  2        2 &quot;Charger 12&quot;  170.
@@ -763,6 +766,7 @@ bike_model</code></pre>
 ##  8        8 &quot;Belter 20&quot;   550.
 ##  9        9 &quot;Belter 24&quot;   649 
 ## 10       10 &quot;Seeker 24&quot;   725.</code></pre>
+<pre class="r"><code>#bike_model</code></pre>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
 </div>
 
