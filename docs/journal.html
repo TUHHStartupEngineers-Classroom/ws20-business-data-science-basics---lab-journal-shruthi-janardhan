@@ -414,7 +414,7 @@ div.tocify {
 <p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
 <div id="my-first-post" class="section level1">
 <h1><span class="header-section-number">1</span> My first post</h1>
-<p>Last compiled: 2020-12-02</p>
+<p>Last compiled: 2020-12-04</p>
 <p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
 <div id="second-level-header" class="section level2">
 <h2><span class="header-section-number">1.1</span> Second level header</h2>
@@ -427,7 +427,7 @@ div.tocify {
 </div>
 <div id="my-second-post-note-the-order" class="section level1">
 <h1><span class="header-section-number">2</span> My second post (note the order)</h1>
-<p>Last compiled: 2020-12-02</p>
+<p>Last compiled: 2020-12-04</p>
 <p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
 </div>
 <div id="chapter-2-intro-to-tidyverse" class="section level1">
@@ -688,7 +688,81 @@ sales_by_year_state_tbl %&gt;%
     #subtitle = &quot;Each product category has an upward trend&quot;,
     fill = &quot;state&quot; # Changes the legend name
   )</code></pre>
-<p><img src="journal_files/figure-html/plot-2.png" width="1440" /></p>
+<p><img src="journal_files/figure-html/plot-2.png" width="1440" /> # Chapter 3 : Data acquisition</p>
+<pre class="r"><code>library(tidyverse) # Main Package - Loads dplyr, purrr, etc.
+library(rvest)     # HTML Hacking &amp; Web Scraping
+library(xopen)     # Quickly opening URLs
+library(jsonlite)  # converts JSON files to R objects
+library(glue)      # concatenate strings
+library(stringi)   # character string/text processing
+library(httr)
+
+# Challenge 1
+resp &lt;- GET(&quot;https://sheetlabs.com/IND/rv&quot;) 
+list_API &lt;- resp %&gt;% 
+  .$content %&gt;% 
+  rawToChar() %&gt;% 
+  fromJSON()
+
+rig_veda_tbl &lt;- as_tibble(list_API)
+rig_veda_tbl %&gt;% head(n= 10)</code></pre>
+<pre><code>## # A tibble: 10 x 7
+##    mandal sukta sungby           sungbycategory sungfor    sungforcategory meter
+##     &lt;int&gt; &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;           &lt;chr&gt;
+##  1      1     1 Madhuchchhanda ~ human male     Agni       divine male     Gaya~
+##  2      1     2 Madhuchchhanda ~ human male     Vayu       divine male     Gaya~
+##  3      1     2 Madhuchchhanda ~ human male     Indra      divine male     Gaya~
+##  4      1     2 Madhuchchhanda ~ human male     Mitra      divine male     Gaya~
+##  5      1     2 Madhuchchhanda ~ human male     Varun      divine male     Gaya~
+##  6      1     3 Madhuchchhanda ~ human male     Ashwiniku~ divine male     Gaya~
+##  7      1     3 Madhuchchhanda ~ human male     Indra      divine male     Gaya~
+##  8      1     3 Madhuchchhanda ~ human male     Vishwadeva divine male     Gaya~
+##  9      1     4 Madhuchchhanda ~ human male     Indra      divine male     Gaya~
+## 10      1     5 Madhuchchhanda ~ human male     Indra      divine male     Gaya~</code></pre>
+<pre class="r"><code>#Challenge 2
+
+# Collect the category families
+url_home   &lt;- &quot;https://www.rosebikes.com/bikes/kids&quot;
+xopen(url_home) # Open links directly from RStudio to inspect them</code></pre>
+<pre><code>## Running cmd /c start &quot;\&quot;\&quot;&quot; /b &quot;https://www.rosebikes.com/bikes/kids&quot;</code></pre>
+<pre class="r"><code># Read in the HTML for the entire webpage
+html_home  &lt;- read_html(url_home)
+# Web scrape the the categories of kids
+bike_model &lt;- html_home %&gt;%
+  
+ html_nodes(css = &quot;.product-tile.product-tile &gt; a&quot;) %&gt;%
+ ## html_nodes(css = &quot;#kinder_bikes_produckte&quot;) %&gt;%
+  html_attr(&quot;title&quot;) %&gt;%
+  enframe(name = &quot;position&quot;, value = &quot;model_name&quot;) 
+  #as_tibble() %&gt;%
+  #rename(value = model_name)
+
+bike_price &lt;- html_home %&gt;%
+  #html_nodes(css = &quot;.product-tile-price__current&quot;) %&gt;%
+  html_nodes(css = &quot;.product-tile-price__current-value&quot;) %&gt;%
+  html_text() %&gt;%
+  
+  str_remove_all(pattern = &quot;\n&quot;) %&gt;%
+  str_remove_all(pattern = &quot;\200&quot;) %&gt;%
+  as.numeric() %&gt;%
+  as_tibble()
+  
+
+bike_model&lt;- mutate (bike_model,bike_price)
+bike_model</code></pre>
+<pre><code>## # A tibble: 10 x 3
+##    position model_name   value
+##       &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+##  1        1 &quot;NOOB    &quot;    129 
+##  2        2 &quot;Charger 12&quot;  170.
+##  3        3 &quot;Belter 14&quot;   380.
+##  4        4 &quot;Seeker 14&quot;   400.
+##  5        5 &quot;Belter 16&quot;   400.
+##  6        6 &quot;Seeker 16&quot;   400.
+##  7        7 &quot;Seeker 20&quot;   599 
+##  8        8 &quot;Belter 20&quot;   550.
+##  9        9 &quot;Belter 24&quot;   649 
+## 10       10 &quot;Seeker 24&quot;   725.</code></pre>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
 </div>
 
