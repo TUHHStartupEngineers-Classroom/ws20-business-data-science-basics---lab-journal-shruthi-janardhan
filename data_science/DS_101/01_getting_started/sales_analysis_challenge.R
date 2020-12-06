@@ -103,7 +103,12 @@ sales_by_state_tbl %>%
     subtitle = "Upward Trend",
     x = "", # Override defaults for x and y
     y = "Revenue"
-  )
+  ) +
+  
+  theme(axis.text.x = element_text(
+    angle = 45,
+    hjust = 1
+  ) )
 
 
 # 6.2 Sales by Year and location ----
@@ -145,6 +150,8 @@ sales_by_year_state_tbl %>%
                                                     decimal.mark = ",", 
                                                     prefix = "", 
                                                     suffix = " €")) +
+
+             
   labs(
     title = "Revenue by year and state",
     #subtitle = "Each product category has an upward trend",

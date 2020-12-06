@@ -412,32 +412,10 @@ div.tocify {
 
 <p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
 <p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
-<div id="my-first-post" class="section level1">
-<h1><span class="header-section-number">1</span> My first post</h1>
 <p>Last compiled: 2020-12-06</p>
-<p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
-<div id="second-level-header" class="section level2">
-<h2><span class="header-section-number">1.1</span> Second level header</h2>
-<p>You can add more headers by adding more hashtags. These won’t be put into the table of contents</p>
-<div id="third-level-header" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> third level header</h3>
-<p>Here’s an even lower level header</p>
-</div>
-</div>
-</div>
-<div id="my-second-post-note-the-order" class="section level1">
-<h1><span class="header-section-number">2</span> My second post (note the order)</h1>
-<p>Last compiled: 2020-12-06</p>
-<p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
-</div>
 <div id="chapter-2-intro-to-tidyverse" class="section level1">
-<h1><span class="header-section-number">3</span> Chapter 2 : Intro to tidyverse</h1>
+<h1><span class="header-section-number">1</span> Chapter 2 : Intro to tidyverse</h1>
 <p>Solutions to challenges</p>
-<p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
-<p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
-<pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
-hist(samples)</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <pre class="r"><code># 2.0 Importing Files ----
 library(tidyverse)
 library(readxl)
@@ -586,7 +564,12 @@ sales_by_state_tbl</code></pre>
     subtitle = &quot;Upward Trend&quot;,
     x = &quot;&quot;, # Override defaults for x and y
     y = &quot;Revenue&quot;
-  )</code></pre>
+  ) +
+  
+  theme(axis.text.x = element_text(
+    angle = 45,
+    hjust = 1
+  ) )</code></pre>
 <p><img src="journal_files/figure-html/plot-1.png" width="1440" /></p>
 <pre class="r"><code># 6.2 Sales by Year and location ----
 
@@ -611,7 +594,7 @@ sales_by_year_state_tbl &lt;- bike_orderlines_wrangled_tb2 %&gt;%
 sales_by_year_state_tbl  </code></pre>
 <pre><code>## # A tibble: 60 x 4
 ##     year state                              sales sales_text 
-##    &lt;dbl&gt; &lt;chr&gt;                              &lt;dbl&gt; &lt;chr&gt;      
+##    &lt;int&gt; &lt;chr&gt;                              &lt;dbl&gt; &lt;chr&gt;      
 ##  1  2015 &quot; Baden-Württemberg&quot;             1031924 1.031.924 €
 ##  2  2015 &quot; Bavaria&quot;                       1301461 1.301.461 €
 ##  3  2015 &quot; Berlin&quot;                          95853 95.853 €   
@@ -648,7 +631,7 @@ sales_by_year_state_tbl %&gt;%
 <p><img src="journal_files/figure-html/plot-2.png" width="1440" /></p>
 </div>
 <div id="chapter-3-data-acquisition" class="section level1">
-<h1><span class="header-section-number">4</span> Chapter 3 : Data acquisition</h1>
+<h1><span class="header-section-number">2</span> Chapter 3 : Data acquisition</h1>
 <pre class="r"><code>library(tidyverse) # Main Package - Loads dplyr, purrr, etc.
 library(rvest)     # HTML Hacking &amp; Web Scraping
 library(xopen)     # Quickly opening URLs
@@ -725,8 +708,8 @@ rename(bike_model, price = value)</code></pre>
 ## 10       10 &quot;Seeker 24&quot;   725.</code></pre>
 <pre class="r"><code>#bike_model</code></pre>
 </div>
-<div id="data-wrangling" class="section level1">
-<h1><span class="header-section-number">5</span> Data Wrangling</h1>
+<div id="chapter-4-data-wrangling" class="section level1">
+<h1><span class="header-section-number">3</span> Chapter 4 : Data Wrangling</h1>
 <pre class="r"><code>library(tidyverse)
 library(data.table)
 library(vroom)
@@ -923,7 +906,106 @@ c1</code></pre>
 ##  8:               Samsung Electronics Co., Ltd.          257 4637
 ##  9: International Business Machines Corporation          438 4553
 ## 10:                     Micron Technology, Inc.          257 4357</code></pre>
-<p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
+</div>
+<div id="chapter-5-data-visualization" class="section level1">
+<h1><span class="header-section-number">4</span> Chapter 5 : Data Visualization</h1>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(maps)
+library(ggplot2)
+library(scales)
+
+
+covid_data_tbl &lt;- read_csv(&quot;https://opendata.ecdc.europa.eu/covid19/casedistribution/csv&quot;)
+# Data Manipulation
+covid_data_tbl_1 &lt;- covid_data_tbl %&gt;%
+  
+  distinct(cases, dateRep, countriesAndTerritories) %&gt;% 
+  filter(countriesAndTerritories == &#39;Germany&#39; | 
+           countriesAndTerritories == &#39;United_Kingdom&#39; | 
+           countriesAndTerritories == &#39;Spain&#39; | 
+           countriesAndTerritories == &#39;France&#39; | 
+           countriesAndTerritories == &#39;United_States_of_America&#39;) %&gt;%
+  mutate(date       = lubridate::dmy(dateRep)) %&gt;% 
+  mutate(date_floor = floor_date(date, unit = &quot;month&quot;)) %&gt;%
+  arrange(date) %&gt;%
+  filter(cases&gt;0) %&gt;%
+  group_by(countriesAndTerritories) %&gt;%
+  mutate(cum_sum_total = cumsum(cases)) %&gt;%
+  ungroup()
+ # Data Visualization
+
+date_label_text &lt;- c(&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,
+                     &quot;July&quot;,&quot;August&quot;, &quot;September&quot;,&quot;October&quot;, &quot;November&quot;, &quot;December&quot;)
+
+covid_data_tbl_1 %&gt;%
+  
+  ggplot(aes(date, cum_sum_total, color = countriesAndTerritories)) +
+  
+  geom_line(size = 1, linetype =1 ) +
+  
+  scale_x_date(date_breaks = &quot;1 month&quot; , date_labels = date_label_text) +
+  scale_y_continuous(labels = scales::dollar_format(scale = 1e-6, 
+                                                    prefix = &quot;&quot;,
+                                                    suffix = &quot;M €&quot;)) +
+
+
+labs(
+  title = str_glue(&quot;COVID- 19 confirmed cases worldwide&quot;),
+  subtitle = str_glue(
+    &quot;As of 11/02/2020, Europe had more cases than the USA&quot;),
+  x = &quot;Year 2020&quot;,
+  y = &quot;Cumulative Cases&quot;
+
+) +
+  theme_minimal() +
+  
+   theme(
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1
+    )) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code># Challenge 2
+
+ covid_data_tbl_2 &lt;- covid_data_tbl %&gt;%
+   mutate(across(countriesAndTerritories, str_replace_all, &quot;_&quot;, &quot; &quot;)) %&gt;%
+   mutate(countriesAndTerritories = case_when(
+     
+     countriesAndTerritories == &quot;United Kingdom&quot; ~ &quot;UK&quot;,
+     countriesAndTerritories == &quot;United States of America&quot; ~ &quot;USA&quot;,
+     countriesAndTerritories == &quot;Czechia&quot; ~ &quot;Czech Republic&quot;,
+     TRUE ~ countriesAndTerritories )) %&gt;%
+      select (deaths,popData2019, countriesAndTerritories) %&gt;%
+ 
+     group_by(countriesAndTerritories) %&gt;%
+     mutate(total_deaths = sum(deaths)) %&gt;%
+     mutate(mortality_rate = total_deaths/popData2019) %&gt;%
+     distinct(countriesAndTerritories,popData2019,mortality_rate) %&gt;%
+     ungroup()
+ 
+   world &lt;- map_data(&quot;world&quot;) %&gt;%
+   select(lat,long,region) %&gt;%
+   distinct(lat,long,region)
+ 
+   covid_data_tbl_2 &lt;-  covid_data_tbl_2 %&gt;%
+   left_join(x = world , by = c(&quot;region&quot; = &quot;countriesAndTerritories&quot;))
+   
+     covid_data_tbl_2 %&gt;%
+     ggplot() + 
+     
+     geom_map(aes(x = long,y = lat, map_id = region, fill = mortality_rate), map = world ) +
+      
+ 
+   
+     labs(
+       title = &quot;Confirmed COVID- 19 Deaths relative to the size of the population&quot;,
+       subtitle = &quot;More than 1.2 Million confirmed COVID- 19 deaths worldwide&quot;,
+       x = &quot;&quot;,
+       y = &quot;&quot;
+     )</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 </div>
 
 
